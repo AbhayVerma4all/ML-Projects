@@ -19,126 +19,127 @@ sound_1 = pygame.mixer.Sound('point(1).wav')
 sound_2 = pygame.mixer.Sound('game_over(1).wav')
 
 
-    def gameOver():
-        font = pygame.font.Font(None, 50, italic=True)
-        text = font.render("Game Over", True, black)
-        while True:
-            for event in pygame.event.get():
-                # print(event)
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-            screen.blit(text, (200, 200))
+def gameOver():
+    font = pygame.font.Font(None, 50, italic=True)
+    text = font.render("Game Over", True, black)
+    while True:
+        for event in pygame.event.get():
+            # print(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        screen.blit(text, (200, 200))
 
-            pygame.display.update()
-
-
-    def score(counter):
-        font = pygame.font.Font(None, 50, italic=True)
-        text = font.render("Score : " + str(counter), True, black)
-        screen.blit(text, (10, 10))
+        pygame.display.update()
 
 
-    def snake(snakeList):
-        for i in range(len(snakeList)):
-            pygame.draw.rect(screen, red, [snakeList[i][0], snakeList[i][1], 50, 50])
+def score(counter):
+    font = pygame.font.Font(None, 50, italic=True)
+    text = font.render("Score : " + str(counter), True, black)
+    screen.blit(text, (10, 10))
 
 
-    def game():
-        x = 10
-        y = 10
-        move_x = 0
-        move_y = 0
-        x_1 = 600
-        y_1 = 200
-        move_x1 = 2
-        move_y1 = 2
-        frog_x = random.randint(0, width - frog.get_width())
-        frog_y = random.randint(0, height - frog.get_height())
-        snakeLength = 1
-        snakeList = []
-        counter = 0
+def snake(snakeList):
+    for i in range(len(snakeList)):
+        pygame.draw.rect(screen, red, [snakeList[i][0], snakeList[i][1], 50, 50])
 
-        clock = pygame.time.Clock()
-        FPS = 80
 
-        while True:
+def game():
+    x = 10
+    y = 10
+    move_x = 0
+    move_y = 0
+    x_1 = 600
+    y_1 = 200
+    move_x1 = 2
+    move_y1 = 2
+    frog_x = random.randint(0, width - frog.get_width())
+    frog_y = random.randint(0, height - frog.get_height())
+    snakeLength = 1
+    snakeList = []
+    counter = 0
 
-            for event in pygame.event.get():
-                # print(event)
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
+    clock = pygame.time.Clock()
+    FPS = 80
 
-                if event.type == pygame.KEYDOWN:
+    while True:
 
-                    if event.key == pygame.K_RIGHT:
-                        move_x = 6
-                        move_y = 0
+        for event in pygame.event.get():
+            # print(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
 
-                    elif event.key == pygame.K_LEFT:
-                        move_x = -6
-                        move_y = 0
-                    elif event.key == pygame.K_DOWN:
-                        move_y = 6
-                        move_x = 0
-                    elif event.key == pygame.K_UP:
-                        move_y = -6
-                        move_x = 0
+            if event.type == pygame.KEYDOWN:
 
-            screen.fill(color_1)
-            snake_rect = pygame.Rect(x, y, 50, 50)
-            screen.blit(frog, (frog_x, frog_y))
+                if event.key == pygame.K_RIGHT:
+                    move_x = 6
+                    move_y = 0
 
-            frog_rect = pygame.Rect(frog_x, frog_y, frog.get_width(), frog.get_height())
-            snake_enemy = pygame.draw.rect(screen, black, [x_1, y_1, 200, 50])
+                elif event.key == pygame.K_LEFT:
+                    move_x = -6
+                    move_y = 0
+                elif event.key == pygame.K_DOWN:
+                    move_y = 6
+                    move_x = 0
+                elif event.key == pygame.K_UP:
+                    move_y = -6
+                    move_x = 0
 
-            x += move_x
-            y += move_y
-            x_1 += move_x1
+        screen.fill(color_1)
+        snake_rect = pygame.Rect(x, y, 50, 50)
+        screen.blit(frog, (frog_x, frog_y))
 
-            snakeHead = []
-            snakeHead.append(x)
-            snakeHead.append(y)
+        frog_rect = pygame.Rect(frog_x, frog_y, frog.get_width(), frog.get_height())
+        snake_enemy = pygame.draw.rect(screen, black, [x_1, y_1, 200, 50])
 
-            snakeList.append(snakeHead)
-            # print(snakeList)
+        x += move_x
+        y += move_y
+        x_1 += move_x1
 
-            if len(snakeList) > snakeLength:
-                del snakeList[0]
+        snakeHead = []
+        snakeHead.append(x)
+        snakeHead.append(y)
 
-            for each in snakeList[:-1]:
-                if each == snakeList[-1]:
-                    sound_2.play()
-                    gameOver()
-            if snake_enemy.colliderect(snake_rect):
+        snakeList.append(snakeHead)
+        # print(snakeList)
+
+        if len(snakeList) > snakeLength:
+            del snakeList[0]
+
+        for each in snakeList[:-1]:
+            if each == snakeList[-1]:
                 sound_2.play()
                 gameOver()
-            if x_1 > width - 200:
-                move_x1 = -2
-            if x_1 < 0:
-                move_x1 = 2
+        if snake_enemy.colliderect(snake_rect):
+            sound_2.play()
+            gameOver()
+        if x_1 > width - 200:
+            move_x1 = -2
+        if x_1 < 0:
+            move_x1 = 2
 
-            if x > width:
-                x = -50
-            elif y > height:
-                y = -50
+        if x > width:
+            x = -50
+        elif y > height:
+            y = -50
 
-            if x < -50:
-                x = width
-            elif y < -50:
-                y = height
+        if x < -50:
+            x = width
+        elif y < -50:
+            y = height
 
-            if frog_rect.colliderect(snake_rect):
-                frog_x = random.randint(0, width - frog.get_width())
-                frog_y = random.randint(0, height - frog.get_height())
-                snakeLength += 5
-                FPS += 3
-                counter += 1
-                sound_1.play()
+        if frog_rect.colliderect(snake_rect):
+            frog_x = random.randint(0, width - frog.get_width())
+            frog_y = random.randint(0, height - frog.get_height())
+            snakeLength += 5
+            FPS += 3
+            counter += 1
+            sound_1.play()
 
-            snake(snakeList)
-            score(counter)
-            pygame.display.update()
-            clock.tick(FPS)
+        snake(snakeList)
+        score(counter)
+        pygame.display.update()
+        clock.tick(FPS)
 
+game()
