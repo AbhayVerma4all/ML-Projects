@@ -143,4 +143,4 @@ def game():
         pygame.display.update()
         clock.tick(FPS)
 
-# game()
+game()
